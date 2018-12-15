@@ -1,0 +1,71 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="!(isHandset$ | async)">
+    
+
+
+      
+    <!--AGREGAMOS EL TÍTULO DEL MENÚ PRINCIPAL-->  
+    <mat-toolbar>
+      <mat-icon>school</mat-icon>Menu
+    </mat-toolbar>
+
+    <!--AGREGAMOS LOS ITEMS DEL MENÚ-->
+    <mat-nav-list>
+      <!--HACEMOS UN RECORRIDO CON FOR DEL ARREGLO routes en my-nav.commponent.ts-->
+      <ng-template let-item let-last="last" ngFor [ngForOf]="routes">
+        <a mat-list-item 	[routerLink]="[item.route]"
+                  [routerLinkActive]="['active']"
+                  [routerLink]="">
+          <span>{{item.title}}</span>
+          <mat-icon class="tc-blue-grey-700">{{item.icon}}</mat-icon>          
+        </a>
+        <!--FIN ITEMS MENÚ PRINCIPAL-->
+      </ng-template>      
+    </mat-nav-list>
+    
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>      
+
+<!--AGREGAMOS UN MENÚ DESPLEGABLE DONDE DAREMOS OPCION A LOGUEARSE-->
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>      
+
+      <mat-menu #menu="matMenu">
+        
+        <button mat-menu-item (click)="login()" *ngIf="!auth.isAuthenticated()">
+          <mat-icon>lock_open</mat-icon>
+          <span>Login</span>
+        </button>
+
+        <button mat-menu-item (click)="logout()" *ngIf="auth.isAuthenticated()">
+          <mat-icon>lock</mat-icon>
+          <span>Logout</span>
+        </button>
+
+      </mat-menu>
+
+
+      <span>Control-U</span>       
+
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    <mat-icon>block</mat-icon>
+
+    <router-outlet></router-outlet>
+
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
